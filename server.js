@@ -28,6 +28,48 @@ app.post("/items/save", (req, res) => {
     });
 });
 
+app.get("/items/done/:id", (req, res) => {
+
+    const id = req.params.id;
+
+    const sql = "UPDATE items SET done = 'true' WHERE id = $1;";
+
+    pool.query(sql, [id], (error, results) => {
+
+        if (error) throw error
+
+        res.status(200).json("done");
+    });
+});
+
+app.get("/items/todo/:id", (req, res) => {
+
+    const id = req.params.id;
+
+    const sql = "UPDATE items SET done = 'false' WHERE id = $1;";
+
+    pool.query(sql, [id], (error, results) => {
+
+        if (error) throw error
+
+        res.status(200).json("done");
+    });
+});
+
+app.get("/items/delete/:id", (req, res) => {
+
+    const id = req.params.id;
+    
+    const sql = "DELETE FROM items WHERE id = $1;";
+
+    pool.query(sql, [id], (error, results) => {
+
+        if (error) throw error
+
+        res.status(200).json("done");
+    });
+});
+
 app.get("/items", function (req, res) {
 
     const sql = 'SELECT * FROM items';

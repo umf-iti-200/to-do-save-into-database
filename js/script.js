@@ -7,7 +7,7 @@ function addToDoItem(item) {
             <div class="ms-2 me-auto">
                 <label class="form-check-label me-austo " for="${item.id}">${item.title}</label>
             </div>
-            <button class="btn btn-sm btn-danger btn-delete"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-sm btn-danger btn-delete" id="${item.id}"><i class="bi bi-trash"></i></button>
         </li>
     `)
 }
@@ -20,12 +20,12 @@ function addDoneItem(item) {
             <div class="ms-2 me-auto">
                 <label class="form-check-label me-austo " for="${item.id}">${item.title}</label>
             </div>
-            <button class="btn btn-sm btn-danger btn-delete"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-sm btn-danger btn-delete" id="${item.id}"><i class="bi bi-trash"></i></button>
         </li>
     `)
 }
 
-function loadItems(){
+function loadItems() {
 
     $("#to-do li").remove();
     $("#done li").remove();
@@ -67,30 +67,40 @@ $(function () {
         };
 
         $.post("http://localhost:3000/items/save", request, function (response) {
-            
+
             loadItems();
         });
     });
 
 
     $(document).on("click", ".btn-delete", function () {
+
         if (confirm("Are you sure?")) {
-            $(this).parent().remove();
+
+            const id = $(this).prop("id");
+
+            $.get("/items/delete/" + id, function (response) {
+                loadItems();
+            });
         }
     });
 
     $(document).on("change", "#to-do .form-check-input", function () {
 
-        $("#done").append($(this).parent().clone())
+        const id = $(this).prop("id");
 
-        $(this).parent().remove();
+        $.get("/items/done/" + id, function (response) {
+            loadItems();
+        });
     });
 
     $(document).on("change", "#done .form-check-input", function () {
 
-        $("#to-do").append($(this).parent().clone())
+        const id = $(this).prop("id");
 
-        $(this).parent().remove();
+        $.get("/items/todo/" + id, function (response) {
+            loadItems();
+        });
     });
 
 });
