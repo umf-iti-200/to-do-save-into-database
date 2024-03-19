@@ -24,8 +24,7 @@ app.post("/items/save", (req, res) => {
 
         if (error) throw error
 
-        // res.status(200).json(results.rows);
-        res.send("Done")
+        res.status(200).json("done");
     });
 });
 

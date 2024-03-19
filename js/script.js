@@ -25,7 +25,10 @@ function addDoneItem(item) {
     `)
 }
 
-$(function () {
+function loadItems(){
+
+    $("#to-do li").remove();
+    $("#done li").remove();
 
     $.get("/items", function (response) {
 
@@ -38,6 +41,11 @@ $(function () {
             }
         }
     });
+}
+
+$(function () {
+
+    loadItems();
 
     // Every time the user opens the list, all to-do checkboxes should not be checked
     $("#to-do .form-check-input").prop("checked", false);
@@ -59,7 +67,8 @@ $(function () {
         };
 
         $.post("http://localhost:3000/items/save", request, function (response) {
-            console.log(response)
+            
+            loadItems();
         });
     });
 
